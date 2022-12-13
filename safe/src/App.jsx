@@ -1,34 +1,50 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { Children, cloneElement, useState } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+const CheckBox = (props) => {
+  const [checked, setChecked] = useState(false);
+  const { children } = props;
+
+  const allChildren = Children.map(children, (child) => {
+    const clone = cloneElement(child, {
+      checked,
+      setChecked,
+    });
+    return clone;
+  });
+
+  return allChildren;
+};
+
+const CheckBoxInput = (props) => {
+  const { checked, setChecked } = props;
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
-}
+    <input
+      type="checkbox"
+      checked={checked}
+      onChange={(event) => {
+        setChecked(event.target.checked);
+      }}
+    />
+  );
+};
 
-export default App
+const Label = (props) => {
+  const { children, setChecked } = props;
+  // By this way we can pass the props from parent to child
+
+  return (
+    <label htmlFor="something" onClick={() => setChecked((prev) => !prev)}>
+      {children}
+    </label>
+  );
+};
+
+export const App = () => {
+  return (
+    <CheckBox>
+      <CheckBoxInput />
+      <Label>Check box Label </Label>
+    </CheckBox>
+  );
+};
