@@ -5,8 +5,11 @@ const CheckBox = (props) => {
   const { children } = props;
 
   const allChildren = Children.map(children, (child) => {
-    if (typeof child.type !== "function") return child;
+    // if (typeof child.type !== "function") return;
     //fixing  the bug
+
+    //another way to fix the same bug
+    if (child.type !== Label && child.type !== CheckBoxInput) return;
 
     const clone = cloneElement(child, {
       checked,
