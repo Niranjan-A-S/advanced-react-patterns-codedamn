@@ -5,6 +5,9 @@ const CheckBox = (props) => {
   const { children } = props;
 
   const allChildren = Children.map(children, (child) => {
+    if (typeof child.type !== "function") return child;
+    //fixing  the bug
+
     const clone = cloneElement(child, {
       checked,
       setChecked,
@@ -44,6 +47,7 @@ export const App = () => {
   return (
     <CheckBox>
       <CheckBoxInput />
+      <br />
       <Label>Check box Label </Label>
     </CheckBox>
   );
